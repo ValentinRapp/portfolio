@@ -1,0 +1,7 @@
+#sketch {
+    position: absolute;
+    z-index: -1;
+    overflow: hidden;
+    margin: 0;
+    height: 100%;
+}

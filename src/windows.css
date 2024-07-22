@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Russo+One&family=Silkscreen:wght@400;700&display=swap');
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+:root {
+    --text-color: #00aa00;
+}
+
+@font-face {
+    font-family: 'arcade classic';
+    src: url('../resources/fonts/arcadeclassic.ttf');
+    /* font-family: 'modeseven';
+    src: url('./resources/fonts/modeseven.ttf'); */
+    font-family: 'modeseven';
+    src: url('../resources/fonts/modeseven_edit.otf');
+}
+
+body {
+    /* font-family: 'Helvetica', sans-serif; */
+    font-family: 'modeseven', sans-serif;
+    background-color: #000000;
+    color: #ccc;
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+h1 {
+    color: var(--text-color);
+    font-size: 50px;
+    letter-spacing: -5px;
+    margin-bottom: 20px;
+}
+
+h2 {
+    color: var(--text-color);
+}
+
+ul {
+    list-style-type: none;
+}
+
+p {
+    margin: 20px 0;
+}
+
+nav {
+    width: 65%;
+    position: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+nav ul {
+    display: flex;
+    /* justify-content: space-around; */
+    align-items: center;
+}
+
+nav ul li {
+    color: var(--text-color);
+    cursor: pointer;
+    max-width: 2000px;
+    padding-right: 20px;
+    padding-left: 20px;
+    white-space: nowrap;
+}
+
+.list {
+    display: inline;
+    padding-left: 0px;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.wb-body {
+    background: #111;
+    padding: 40px;
+}
+
+.hidden {
+    display: none;
+}
+
+.cursor {
+    font-weight: 700;
+    animation: 1s blink step-end infinite;
+}
+
+.pagecursor {
+    font-weight: 700;
+    animation: 1s pageblink step-end infinite;
+}
+
+@keyframes blink {
+    from, to {
+        color: transparent;
+    }
+    50% {
+        color: var(--text-color)
+    }
+}
+
+@keyframes pageblink {
+    from, to {
+        color: transparent;
+    }
+    50% {
+        color: #ffffff;
+    }
+}
