@@ -5,8 +5,9 @@ varying vec2 pos;
 uniform float millis;
 float time = millis / 1000.0;
 
+uniform float randomValue;
 uniform vec2 resolution;
-uniform vec2 mouse;
+// uniform vec2 mouse;
 
 #define count 15.
 
@@ -55,12 +56,19 @@ vec3 palette( float t, vec3 a, vec3 b, vec3 c, vec3 d )
 
 void main()
 {
-    vec2 fragCoord = gl_FragCoord.xy - resolution.xy / 2.0;
-    // Get the normalized coordinates (0 to 1)
-    vec2 uv = fragCoord / resolution.xy;
+    // vec2 fragCoord = gl_FragCoord.xy - resolution.xy / 2.0;
+    // // Get the normalized coordinates (0 to 1)
+    // vec2 uv = fragCoord / resolution.xy;
+    // vec2 fragCoord = gl_FragCoord.xy;
+    // vec2 uv = fragCoord / resolution.xy / 2.0;
+    
+    // centered UV
+    vec2 uv = (pos - 0.5) * 2.0;
+    // making the uv smaller
+    uv *= 2.0;
 
     // Correct the aspect ratio
-    uv = uv * 2.0 - 1.0;
+    // uv = uv * 2.0 - 1.0;
     uv.x *= resolution.x / resolution.y;
     
     vec3 color = vec3(0.);
@@ -82,7 +90,7 @@ void main()
         float amp = .4;
         float sep = .03;
 
-        float noisyRadius= radius + noise(uv + time-i*sep)*amp;
+        float noisyRadius= radius + noise(uv + (time + randomValue)-i*sep)*amp;
         // Calculate the edge using smoothstep
         float edge = smoothstep(noisyRadius - thickness, noisyRadius, dist) - smoothstep(noisyRadius, noisyRadius + thickness, dist);
         
@@ -97,7 +105,7 @@ void main()
     //     vec3(0.659,0.438,0.328),
     //     vec3(0.388,0.388,0.296),
     //     vec3(2.538,2.478,0.168));
-    vec3 coloring = palette(time * 0.025,
+    vec3 coloring = palette((randomValue + time) * 0.025,
         vec3(.5),
         vec3(.5),
         vec3(1.),

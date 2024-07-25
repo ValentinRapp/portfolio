@@ -3,6 +3,8 @@ export let checkFrameRate = true;
 let frameArray = [];
 let framesRendered = 0;
 
+const randomValue = Math.random() * 100;
+
 const frameArrayLength = 60;
 for (let i = 0; i < frameArrayLength; i++) {
   frameArray.push(120);
@@ -24,41 +26,42 @@ const palette = (t, a, b, c, d) => {
   ];
 }
 
-// Exporting a function called 'highQualitySketch'
 export const highQualitySketch = (p) => {
   let shader;
-  let tex1;
-  let tex2;
-  let tex3;
+  // let tex1;
+  // let tex2;
+  // let tex3;
 
   p.preload = () => {
     shader = p.loadShader('resources/default.vert', 'resources/opal.frag');
     
-    tex1 = p.loadImage('resources/textures/dither/tex1.png');
-    tex2 = p.loadImage('resources/textures/dither/tex2.png');
-    tex3 = p.loadImage('resources/textures/dither/tex3.png');
+    // tex1 = p.loadImage('resources/textures/dither/tex1.png');
+    // tex2 = p.loadImage('resources/textures/dither/tex2.png');
+    // tex3 = p.loadImage('resources/textures/dither/tex3.png');
   }
 
   // Calling p5.js functions, using the variable 'p'
   p.setup = () => {
     // Creating a canvas using the entire screen of the webpage
-    p.createCanvas(window.visualViewport.width, window.visualViewport.height, p.WEBGL);
+    p.createCanvas(window.visualViewport.width,  window.visualViewport.height, p.WEBGL);
     // p.createCanvas(window.innerWidth, window.innerHeight, p.WEBGL);
     p.shader(shader);
-    console.log('p5.js setup function executed!');
-    console.log(window.visualViewport.width, window.visualViewport.height);
+    // console.log('p5.js setup function executed!');
+    // console.log(window.visualViewport.width, window.visualViewport.height);
   }
 
   p.draw = () => {
-    shader.setUniform('millis', p.millis());
-    shader.setUniform('resolution', [p.width, p.height]);
-    shader.setUniform('mouse', [p.mouseX, p.mouseY]);
 
-    shader.setUniform('iChannel0', tex1);
-    shader.setUniform('iChannel1', tex2);
-    shader.setUniform('iChannel2', tex3);
+    shader.setUniform('millis', p.millis());
+    shader.setUniform('resolution', [window.visualViewport.width,  window.visualViewport.height]);
+    shader.setUniform('randomValue', randomValue);
+    // shader.setUniform('mouse', [p.mouseX, p.mouseY]);
+
+    // shader.setUniform('iChannel0', tex1);
+    // shader.setUniform('iChannel1', tex2);
+    // shader.setUniform('iChannel2', tex3);
       
-    p.rect(0, 0, p.width, p.height);
+    p.rect(0, 0, window.visualViewport.width,  window.visualViewport.height);
     
     if (checkFrameRate) {
       moveElementsToTheLeft(frameArray, p.getFrameRate());
@@ -69,7 +72,7 @@ export const highQualitySketch = (p) => {
   }
 
   p.windowResized = () => {
-    p.resizeCanvas(window.visualViewport.width, window.visualViewport.height);
+    p.resizeCanvas(window.visualViewport.width,  window.visualViewport.height);
   }
 }
 
@@ -84,20 +87,20 @@ export const lowQualitySketch = (p) => {
 
   p.setup = () => {
     // Creating a canvas using the entire screen of the webpage
-    p.createCanvas(window.innerWidth, window.innerHeight);
+    p.createCanvas(window.visualViewport.width, window.visualViewport.height);
     p.strokeWeight(5);
     p.background(0);
-    console.log('p5.js setup function executed!');
+    // console.log('p5.js setup function executed!');
   }
 
   p.draw = () => {
       p.background(0, 50);
 
       // Draw an ellipse
-      p.translate(p.width / 2, p.height / 2);
+      p.translate(window.visualViewport.width / 2, window.visualViewport.height / 2);
       p.rotate(r);
       p.fill(0, 1);
-      color = palette(p.millis() * 0.000025, [0.5, 0.5, 0.5], [0.5, 0.5, 0.5], [1, 1, 1], [0.0, 0.333, 0.667]);
+      color = palette((randomValue + p.millis() * 0.001) * 0.025, [0.5, 0.5, 0.5], [0.5, 0.5, 0.5], [1, 1, 1], [0.0, 0.333, 0.667]);
       p.stroke(color[0] * 255, color[1] * 255, color[2] * 255);
       p.ellipse(0, 0, w, h);
   
@@ -110,6 +113,6 @@ export const lowQualitySketch = (p) => {
   }
 
   p.windowResized = () => {
-    p.resizeCanvas(window.innerWidth, window.innerHeight);
+    p.resizeCanvas(window.visualViewport.width, window.visualViewport.height);
   }
 }
