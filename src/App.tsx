@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './App.css'
 import './windows.css'
 import 'winbox/dist/css/winbox.min.css'; // required
@@ -6,6 +6,13 @@ import 'winbox/dist/css/themes/modern.min.css'; // optional
 import WinBox from 'react-winbox';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { ScrollButton } from './scrollButton';
+// import mobile from 'is-mobile';
+
+const mobile = (): boolean => {
+  const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
+  return /android|iphone|ipad|ipod|blackberry|windows phone/i.test(userAgent);
+}
 
 const openFile = (path: string, callback: (text: string) => void): void => {
   fetch(path)
@@ -13,9 +20,9 @@ const openFile = (path: string, callback: (text: string) => void): void => {
     .then(text => callback(text));
 }
 
-function ContactMe(): JSX.Element {
+function ContactMe(props: {id: string}): JSX.Element {
   return (
-    <div>
+    <div id={props.id}>
       <h2>Contact me<span className='cursor'>|</span></h2>
       <a href='mailto: valentin.rapp@epitech.eu' target='_blank'>valentin.rapp@epitech.eu</a>
       <br/>
@@ -27,9 +34,9 @@ function ContactMe(): JSX.Element {
   );
 }
 
-function AboutMe(): JSX.Element {
+function AboutMe(props: {id: string}): JSX.Element {
   return (
-    <div>
+    <div id={props.id}>
       <h2>About me<span className='cursor'>|</span></h2>
       <p>Hi! I'm Valentin Rapp, a computer science student from France pursuing a master's degree in software engineering. I'm passionate about maths and programming in general, more specifically anything related to graphics programming. I like to understand deeply how things work so I often work with low level languages to get a better grasp of comp-sci concepts I didn't know before. I've been passionate about computers since I was young and I'm always eager to learn more!</p>
       <p>I am currently looking for a part-time internship from September to February 2024 in anything regarding tech.</p>
@@ -37,18 +44,18 @@ function AboutMe(): JSX.Element {
   );
 }
 
-function Raytracer(props: {raytracerText: string}): JSX.Element {
+function Raytracer(props: {id: string, raytracerText: string}): JSX.Element {
   return (
-    <div>
+    <div id={props.id}>
       <h1>Raytracer<span className='cursor'>|</span></h1>
       <Markdown className='md' remarkPlugins={[remarkGfm]}>{props.raytracerText}</Markdown>
     </div>
   );
 }
 
-function Myteams(props: {myteamsText1: string, myteamsText2: string, myteamsText3: string, myteamsText4: string}): JSX.Element {
+function Myteams(props: {id: string, myteamsText1: string, myteamsText2: string, myteamsText3: string, myteamsText4: string}): JSX.Element {
   return (
-    <div>
+    <div id={props.id}>
       <h1>Myteams<span className='cursor'>|</span></h1>
       <Markdown className='md' remarkPlugins={[remarkGfm]}>{props.myteamsText1}</Markdown>
       <video width="100%" height="auto" controls>
@@ -70,9 +77,9 @@ function Myteams(props: {myteamsText1: string, myteamsText2: string, myteamsText
   );
 }
 
-function OpenGL(props: {openglText1: string, openglText2: string}): JSX.Element {
+function OpenGL(props: {id: string, openglText1: string, openglText2: string}): JSX.Element {
   return (
-    <div>
+    <div id={props.id}>
       <h1>OpenGL 3D Engine<span className='cursor'>|</span></h1>
       <Markdown className='md' remarkPlugins={[remarkGfm]}>{props.openglText1}</Markdown>
       <video width="100%" height="auto" autoPlay loop>
@@ -84,9 +91,9 @@ function OpenGL(props: {openglText1: string, openglText2: string}): JSX.Element 
   );
 }
 
-function Shadertoy(): JSX.Element {
+function Shadertoy(props: {id: string}): JSX.Element {
   return (
-    <div>
+    <div id={props.id}>
       <h1>My Shadertoy<span className='cursor'>|</span></h1>
       <p>This was a project made in C++ using OpenGL, this project, although still unfinished, is an attempt at recreating the popular platform <a href='https://www.shadertoy.com/' target='_blank'>shadertoy</a> in C++ using OpenGL.</p>
       <p>Shadertoy is a platform allowing users to easily write standalone shaders in <a href='https://en.wikipedia.org/wiki/OpenGL_Shading_Language' target='_blank'>GLSL (OpenGL Shading Language)</a>.</p>
@@ -117,18 +124,18 @@ function Shadertoy(): JSX.Element {
   );
 }
 
-function Zappy(props: {zappyText1: string, zappyText2: string}): JSX.Element {
+function Zappy(props: {id: string, zappyText1: string, zappyText2: string}): JSX.Element {
   const [showNetworkDoc, setShowNetworkDoc] = useState(false);
   
   return (
-    <div>
+    <div id={props.id}>
       <h1>Zappy<span className='cursor'>|</span></h1>
       <Markdown className='md' remarkPlugins={[remarkGfm]}>{props.zappyText1}</Markdown>
       <video width="100%" height="auto" controls autoPlay loop>
         <source src="screenshots/zappy.mp4" type="video/mp4" />
         <p style={{color: 'red'}}>Video playback is unavailable on this browser.</p>
       </video>
-      <p style={{color: "#00aa00", cursor: "pointer"}} onClick={() => setShowNetworkDoc(true)}>If you want more details about how every part communicates together, take a look at the Network documentation protocol (advanced)</p>
+      <p style={{color: "#00aa00", cursor: "pointer"}} onClick={() => setShowNetworkDoc(current => !current)}>If you want more details about how every part communicates together, take a look at the Network documentation protocol (advanced)</p>
       {showNetworkDoc && (
         <Markdown className='md' remarkPlugins={[remarkGfm]}>{props.zappyText2}</Markdown>
       )}
@@ -136,16 +143,20 @@ function Zappy(props: {zappyText1: string, zappyText2: string}): JSX.Element {
   );
 }
 
-function S3(props: {S3text: string}): JSX.Element {
+function S3(props: {id: string, S3text: string}): JSX.Element {
   return (
-    <div>
+    <div id={props.id}>
       <h1>S3 Advanced Pricing Simulator<span className='cursor'>|</span></h1>
       <Markdown className='md' remarkPlugins={[remarkGfm]}>{props.S3text}</Markdown>
     </div>
   );
 }
 
+const IDs = ['about', 'contact', 'raytracer', 'myteams', 'opengl', 'shadertoy', 'zappy', 's3'];
+
 function App(): JSX.Element {
+  const isMobile = useRef(mobile());
+
   const [openContactWin, setOpenContactWin] = useState(false);
   const [contactWinBackgroundCol, setContactWinBackgroundCol] = useState('#00aa00');
 
@@ -197,183 +208,234 @@ function App(): JSX.Element {
     openFile('resources/s3pricingsimulator.md', setS3text);
   }, []);
 
+  const handleRedirect = (id: string, callback: () => void): void => {
+    isMobile.current ? window.location.href = `#${id}` : callback();
+  }
+
   return (
     <>
-    <div className='container'>
-      <div className='page'>
-        <h1 style={{color: '#fff'}}>Valentin Rapp<span className='pagecursor'>|</span></h1>
-        <nav>
-          <ul>
-            <li style={{color: '#fff'}} onClick={() => setOpenContactWin(!openContactWin)}>contact me</li>
-            <li style={{color: '#fff'}} onClick={() => setOpenAboutWin(!openAboutWin)}>about me</li>
-            <li style={{color: '#fff'}} onClick={() => setOpenProjectsWin(!openProjectsWin)}>projects</li>
-            {/* <li style={{color: '#fff'}}>technologies</li> */}
-          </ul>
-        </nav>
-      </div>
-      <div className='windows'>
-        {openContactWin && (
-          <WinBox
-            title="Contact"
-            x="center"
-            y={30}
-            width={Math.min(document.body.clientWidth, 450)}
-            height={Math.min(document.body.clientHeight, 320)}
-            background={contactWinBackgroundCol}
-            onFocus={() => setContactWinBackgroundCol('#00aa00')}
-            onBlur={() => setContactWinBackgroundCol('#777')}
-            onClose={() => setOpenContactWin(false)}
-          >
-            <ContactMe />
-          </WinBox>
-        )}
-        {openAboutWin && (
-          <WinBox
-            title="About me"
-            x="center"
-            y={30}
-            width={Math.min(document.body.clientWidth, 700)}
-            height={Math.min(document.body.clientHeight, 540)}
-            background={aboutWinBackgroundCol}
-            onFocus={() => setAboutWinBackgroundCol('#00aa00')}
-            onBlur={() => setAboutWinBackgroundCol('#777')}
-            onClose={() => setOpenAboutWin(false)}
-          >
-            <AboutMe />
-          </WinBox>
-        )}
-        {openProjectsWin && (
-          <WinBox
-            title="Projects"
-            x="center"
-            y={30}
-            width={Math.min(document.body.clientWidth, 700)}
-            height={Math.min(document.body.clientHeight, 506)}
-            background={projectsWinBackgroundCol}
-            onFocus={() => setProjectsWinBackgroundCol('#00aa00')}
-            onBlur={() => setProjectsWinBackgroundCol('#777')}
-            onClose={() => setOpenProjectsWin(false)}
-          >
-            <div>
-              <h2>My projects<span className='cursor'>|</span></h2>
+      <div className='container'>
+        <div className='page'>
+          <h1 style={{color: '#fff'}}>Valentin Rapp<span className='pagecursor'>|</span></h1>
+          <nav>
+            <ul>
+              {/* {isMobile.current ? <p>mobile</p> : <p>desktop</p>} */}
+              <li style={{color: '#fff'}} onClick={() => handleRedirect(IDs[1], () => setOpenContactWin(current => !current))}>contact me</li>
+              <li style={{color: '#fff'}} onClick={() => handleRedirect(IDs[0], () => setOpenAboutWin(current => !current))}>about me</li>
+              <li style={{color: '#fff'}} onClick={() => handleRedirect('projects', () => setOpenProjectsWin(current => !current))}>projects</li>
+              {/* <li style={{color: '#fff'}}>technologies</li> */}
+            </ul>
+          </nav>
+        </div>
+        {isMobile.current ? (
+          <div className='mobilePage'>
+            <AboutMe id={IDs[0]}/>
+            <ContactMe id={IDs[1]}/>
+            <div id='projects'>
+              <h1>My projects<span className='cursor'>|</span></h1>
               <p>Here are some of my projects:</p>
-              <div className='page'>
-                <nav>
+              <div style={{marginBottom: "15px"}}>
+                <nav style={{justifyContent: 'normal'}}>
                   <ul className='list'>
-                    {/* When a user clicks, it sets the window the user is clicking on in focus instead of
-                    the window that appears; making the window appear with a slight delay resolves this issue */}
-                    <li onClick={() => setTimeout(() => setOpenRaytracerWin(!openRaytracerWin), 1)}>Raytracer</li>
-                    <li onClick={() => setTimeout(() => setOpenOpenglWin(!openOpenglWin), 1)}>OpenGL 3D Engine</li>
-                    <li onClick={() => setTimeout(() => setOpenMyteamsWin(!openMyteamsWin), 1)}>Myteams</li>
-                    <li onClick={() => setTimeout(() => setOpenS3Win(!openS3Win), 1)}>S3 Advanced Pricing Simulator</li>
-                    <li onClick={() => setTimeout(() => setShadertoyWin(!shadertoyWin), 1)}>My Shadertoy</li>
-                    <li onClick={() => setTimeout(() => setOpenZappyWin(!openZappyWin), 1)}>Zappy</li>
+                    <li onClick={() => handleRedirect(IDs[2], () => {})}>Raytracer</li>
+                    <li onClick={() => handleRedirect(IDs[4], () => {})}>OpenGL 3D Engine</li>
+                    <li onClick={() => handleRedirect(IDs[3], () => {})}>Myteams</li>
+                    <li onClick={() => handleRedirect(IDs[7], () => {})}>S3 Advanced Pricing Simulator</li>
+                    <li onClick={() => handleRedirect(IDs[5], () => {})}>My Shadertoy</li>
+                    <li onClick={() => handleRedirect(IDs[6], () => {})}>Zappy</li>
                   </ul>
                 </nav>
               </div>
             </div>
-          </WinBox>
-        )}
-        {openRaytracerWin && (
-          <WinBox
-            title="Raytracer"
-            x="center"
-            y={30}
-            width={Math.min(document.body.clientWidth, 950)}
-            height={Math.min(document.body.clientHeight, 900)}
-            background={raytracerWinBackgroundCol}
-            onFocus={() => setRaytracerWinBackgroundCol('#00aa00')}
-            onBlur={() => setRaytracerWinBackgroundCol('#777')}
-            onClose={() => setOpenRaytracerWin(false)}
-          >
-            <Raytracer raytracerText={raytracerText} />
-          </WinBox>
-        )}
-        {openMyteamsWin && (
-          <WinBox
-            title="Myteams"
-            x="center"
-            y={30}
-            width={Math.min(document.body.clientWidth, 950)}
-            height={Math.min(document.body.clientHeight, 700)}
-            background={myteamsWinBackgroundCol}
-            onFocus={() => setMyteamsWinBackgroundCol('#00aa00')}
-            onBlur={() => setMyteamsWinBackgroundCol('#777')}
-            onClose={() => setOpenMyteamsWin(false)}
-          >
+            <Raytracer id={IDs[2]} raytracerText={raytracerText} />
+            <OpenGL
+              id={IDs[4]}
+              openglText1={openglText1}
+              openglText2={openglText2}
+            />
             <Myteams
+              id={IDs[3]}
               myteamsText1={myteamsText1}
               myteamsText2={myteamsText2}
               myteamsText3={myteamsText3}
               myteamsText4={myteamsText4}
             />
-          </WinBox>
-        )}
-        {openOpenglWin && (
-          <WinBox
-            title="OpenGL 3D Engine"
-            x="center"
-            y={30}
-            width={Math.min(document.body.clientWidth, 950)}
-            height={Math.min(document.body.clientHeight, 840)}
-            background={openglWinBackgroundCol}
-            onFocus={() => setOpenglWinBackgroundCol('#00aa00')}
-            onBlur={() => setOpenglWinBackgroundCol('#777')}
-            onClose={() => setOpenOpenglWin(false)}
-          >
-            <OpenGL
-              openglText1={openglText1}
-              openglText2={openglText2}
+            <S3 id={IDs[7]} S3text={S3text} />
+            <Shadertoy id={IDs[5]}/>
+            <Zappy
+              id={IDs[6]}
+              zappyText1={zappyText1}
+              zappyText2={zappyText2}
             />
-          </WinBox>
-        )}
-        {shadertoyWin && (
-          <WinBox
-            title="My Shadertoy"
-            x="center"
-            y={30}
-            width={Math.min(document.body.clientWidth, 950)}
-            height={Math.min(document.body.clientHeight, 840)}
-            background={shadertoyWinBackgroundCol}
-            onFocus={() => setShadertoyWinBackgroundCol('#00aa00')}
-            onBlur={() => setShadertoyWinBackgroundCol('#777')}
-            onClose={() => setShadertoyWin(false)}
-          >
-            <Shadertoy />
-          </WinBox>
-        )}
-        {openZappyWin && (
-          <WinBox
-            title="Zappy"
-            x="center"
-            y={30}
-            width={Math.min(document.body.clientWidth, 950)}
-            height={Math.min(document.body.clientHeight, 840)}
-            background={zappyWinBackgroundCol}
-            onFocus={() => setZappyWinBackgroundCol('#00aa00')}
-            onBlur={() => setZappyWinBackgroundCol('#777')}
-            onClose={() => setOpenZappyWin(false)}
-          >
-            <Zappy zappyText1={zappyText1} zappyText2={zappyText2}/>
-          </WinBox>
-        )}
-        {openS3Win && (
-          <WinBox
-            title="S3 Advanced Pricing Simulator"
-            x="center"
-            y={30}
-            width={Math.min(document.body.clientWidth, 950)}
-            height={Math.min(document.body.clientHeight, 840)}
-            background={S3WinBackgroundCol}
-            onFocus={() => setS3WinBackgroundCol('#00aa00')}
-            onBlur={() => setS3WinBackgroundCol('#777')}
-            onClose={() => setOpenS3Win(false)}
-          >
-            <S3 S3text={S3text} />
-          </WinBox>
+            <ScrollButton visibilityTreshold={window.innerHeight} />
+          </div>
+        ) : (
+          <div className='windows'>
+            {openContactWin && (
+              <WinBox
+                title="Contact"
+                x="center"
+                y={30}
+                width={Math.min(document.body.clientWidth, 450)}
+                height={Math.min(document.body.clientHeight, 320)}
+                background={contactWinBackgroundCol}
+                onFocus={() => setContactWinBackgroundCol('#00aa00')}
+                onBlur={() => setContactWinBackgroundCol('#777')}
+                onClose={() => setOpenContactWin(false)}
+              >
+                <ContactMe id={IDs[0]}/>
+              </WinBox>
+            )}
+            {openAboutWin && (
+              <WinBox
+                title="About me"
+                x="center"
+                y={30}
+                width={Math.min(document.body.clientWidth, 700)}
+                height={Math.min(document.body.clientHeight, 540)}
+                background={aboutWinBackgroundCol}
+                onFocus={() => setAboutWinBackgroundCol('#00aa00')}
+                onBlur={() => setAboutWinBackgroundCol('#777')}
+                onClose={() => setOpenAboutWin(false)}
+              >
+                <AboutMe id={IDs[1]}/>
+              </WinBox>
+            )}
+            {openProjectsWin && (
+              <WinBox
+                title="Projects"
+                x="center"
+                y={30}
+                width={Math.min(document.body.clientWidth, 700)}
+                height={Math.min(document.body.clientHeight, 506)}
+                background={projectsWinBackgroundCol}
+                onFocus={() => setProjectsWinBackgroundCol('#00aa00')}
+                onBlur={() => setProjectsWinBackgroundCol('#777')}
+                onClose={() => setOpenProjectsWin(false)}
+              >
+                <div id='projects'>
+                  <h2>My projects<span className='cursor'>|</span></h2>
+                  <p>Here are some of my projects:</p>
+                  <div>
+                    <nav style={{justifyContent: 'normal'}}>
+                      <ul className='list'>
+                        {/* When a user clicks, it sets the window the user is clicking on in focus instead of
+                        the window that appears; making the window appear with a slight delay resolves this issue */}
+                        <li onClick={() => setTimeout(() => setOpenRaytracerWin(!openRaytracerWin), 1)}>Raytracer</li>
+                        <li onClick={() => setTimeout(() => setOpenOpenglWin(!openOpenglWin), 1)}>OpenGL 3D Engine</li>
+                        <li onClick={() => setTimeout(() => setOpenMyteamsWin(!openMyteamsWin), 1)}>Myteams</li>
+                        <li onClick={() => setTimeout(() => setOpenS3Win(!openS3Win), 1)}>S3 Advanced Pricing Simulator</li>
+                        <li onClick={() => setTimeout(() => setShadertoyWin(!shadertoyWin), 1)}>My Shadertoy</li>
+                        <li onClick={() => setTimeout(() => setOpenZappyWin(!openZappyWin), 1)}>Zappy</li>
+                      </ul>
+                    </nav>
+                  </div>
+                </div>
+              </WinBox>
+            )}
+            {openRaytracerWin && (
+              <WinBox
+                title="Raytracer"
+                x="center"
+                y={30}
+                width={Math.min(document.body.clientWidth, 950)}
+                height={Math.min(document.body.clientHeight, 900)}
+                background={raytracerWinBackgroundCol}
+                onFocus={() => setRaytracerWinBackgroundCol('#00aa00')}
+                onBlur={() => setRaytracerWinBackgroundCol('#777')}
+                onClose={() => setOpenRaytracerWin(false)}
+              >
+                <Raytracer id={IDs[2]} raytracerText={raytracerText} />
+              </WinBox>
+            )}
+            {openMyteamsWin && (
+              <WinBox
+                title="Myteams"
+                x="center"
+                y={30}
+                width={Math.min(document.body.clientWidth, 950)}
+                height={Math.min(document.body.clientHeight, 700)}
+                background={myteamsWinBackgroundCol}
+                onFocus={() => setMyteamsWinBackgroundCol('#00aa00')}
+                onBlur={() => setMyteamsWinBackgroundCol('#777')}
+                onClose={() => setOpenMyteamsWin(false)}
+              >
+                <Myteams
+                  id={IDs[3]}
+                  myteamsText1={myteamsText1}
+                  myteamsText2={myteamsText2}
+                  myteamsText3={myteamsText3}
+                  myteamsText4={myteamsText4}
+                />
+              </WinBox>
+            )}
+            {openOpenglWin && (
+              <WinBox
+                title="OpenGL 3D Engine"
+                x="center"
+                y={30}
+                width={Math.min(document.body.clientWidth, 950)}
+                height={Math.min(document.body.clientHeight, 840)}
+                background={openglWinBackgroundCol}
+                onFocus={() => setOpenglWinBackgroundCol('#00aa00')}
+                onBlur={() => setOpenglWinBackgroundCol('#777')}
+                onClose={() => setOpenOpenglWin(false)}
+              >
+                <OpenGL
+                  id={IDs[4]}
+                  openglText1={openglText1}
+                  openglText2={openglText2}
+                />
+              </WinBox>
+            )}
+            {shadertoyWin && (
+              <WinBox
+                title="My Shadertoy"
+                x="center"
+                y={30}
+                width={Math.min(document.body.clientWidth, 950)}
+                height={Math.min(document.body.clientHeight, 840)}
+                background={shadertoyWinBackgroundCol}
+                onFocus={() => setShadertoyWinBackgroundCol('#00aa00')}
+                onBlur={() => setShadertoyWinBackgroundCol('#777')}
+                onClose={() => setShadertoyWin(false)}
+              >
+                <Shadertoy id={IDs[5]}/>
+              </WinBox>
+            )}
+            {openZappyWin && (
+              <WinBox
+                title="Zappy"
+                x="center"
+                y={30}
+                width={Math.min(document.body.clientWidth, 950)}
+                height={Math.min(document.body.clientHeight, 840)}
+                background={zappyWinBackgroundCol}
+                onFocus={() => setZappyWinBackgroundCol('#00aa00')}
+                onBlur={() => setZappyWinBackgroundCol('#777')}
+                onClose={() => setOpenZappyWin(false)}
+              >
+                <Zappy id={IDs[6]} zappyText1={zappyText1} zappyText2={zappyText2}/>
+              </WinBox>
+            )}
+            {openS3Win && (
+              <WinBox
+                title="S3 Advanced Pricing Simulator"
+                x="center"
+                y={30}
+                width={Math.min(document.body.clientWidth, 950)}
+                height={Math.min(document.body.clientHeight, 840)}
+                background={S3WinBackgroundCol}
+                onFocus={() => setS3WinBackgroundCol('#00aa00')}
+                onBlur={() => setS3WinBackgroundCol('#777')}
+                onClose={() => setOpenS3Win(false)}
+              >
+                <S3 id={IDs[7]} S3text={S3text} />
+              </WinBox>
+            )}
+          </div>
         )}
       </div>
-    </div>
     </>
   )
 }

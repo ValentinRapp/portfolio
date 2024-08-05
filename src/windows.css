@@ -52,6 +52,7 @@ p {
 nav {
     width: 65%;
     position: flex;
+    display: flex;
     justify-content: center;
     align-items: center;
 }
