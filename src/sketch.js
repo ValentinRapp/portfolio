@@ -33,11 +33,11 @@ export const highQualitySketch = (p) => {
   // let tex3;
 
   p.preload = () => {
-    shader = p.loadShader('resources/default.vert', 'resources/opal.frag');
+    shader = p.loadShader('/default.vert', '/opal.frag');
     
-    // tex1 = p.loadImage('resources/textures/dither/tex1.png');
-    // tex2 = p.loadImage('resources/textures/dither/tex2.png');
-    // tex3 = p.loadImage('resources/textures/dither/tex3.png');
+    // tex1 = p.loadImage('/textures/dither/tex1.png');
+    // tex2 = p.loadImage('/textures/dither/tex2.png');
+    // tex3 = p.loadImage('/textures/dither/tex3.png');
   }
 
   // Calling p5.js functions, using the variable 'p'

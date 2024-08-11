@@ -82,8 +82,8 @@ function OpenGL(props: {id: string, openglText1: string, openglText2: string}): 
     <div id={props.id}>
       <h1>OpenGL 3D Engine<span className='cursor'>|</span></h1>
       <Markdown className='md' remarkPlugins={[remarkGfm]}>{props.openglText1}</Markdown>
-      <video width="100%" height="auto" autoPlay loop>
-        <source src="screenshots/opengldemo.mp4" type="video/mp4" />
+      <video width="100%" height="auto" controls autoPlay loop>
+        <source src="https://raw.githubusercontent.com/ValentinRapp/portfolio/media/opengldemo.mp4" type="video/mp4" />
         <p style={{color: 'red'}}>Video playback is unavailable on this browser.</p>
       </video>
       <Markdown className='md' remarkPlugins={[remarkGfm]}>{props.openglText2}</Markdown>
@@ -98,26 +98,26 @@ function Shadertoy(props: {id: string}): JSX.Element {
       <p>This was a project made in C++ using OpenGL, this project, although still unfinished, is an attempt at recreating the popular platform <a href='https://www.shadertoy.com/' target='_blank'>shadertoy</a> in C++ using OpenGL.</p>
       <p>Shadertoy is a platform allowing users to easily write standalone shaders in <a href='https://en.wikipedia.org/wiki/OpenGL_Shading_Language' target='_blank'>GLSL (OpenGL Shading Language)</a>.</p>
       <h2>Examples</h2>
-      <video width="100%" height="auto" autoPlay loop>
-          <source src="screenshots/opal.mp4" type="video/mp4" />
+      <video width="100%" height="auto" controls autoPlay loop>
+          <source src="https://raw.githubusercontent.com/ValentinRapp/portfolio/media/opal.mp4" type="video/mp4" />
           <p style={{color: 'red'}}>Video playback is unavailable on this browser.</p>
       </video>
       <p>This is the effect that is been rendered in the background of this webpage, but higher quality. And yes, what you're seeing when opening this page is not a fancy CSS effect but an actual shader effect :)</p>
-      <video width="100%" height="auto" autoPlay loop>
-          <source src="screenshots/abstract.mp4" type="video/mp4" />
+      <video width="100%" height="auto" controls autoPlay loop>
+          <source src="https://raw.githubusercontent.com/ValentinRapp/portfolio/media/abstract.mp4" type="video/mp4" />
           <p style={{color: 'red'}}>Video playback is unavailable on this browser.</p>
       </video>
       <p>As you can see in this example, my program allows you to fetch the mouse position from the shader and do whatever you want with it.</p>
-      <video width="100%" height="auto" autoPlay loop>
-          <source src="screenshots/clouds.mp4" type="video/mp4" />
+      <video width="100%" height="auto" controls autoPlay loop>
+          <source src="https://raw.githubusercontent.com/ValentinRapp/portfolio/media/clouds.mp4" type="video/mp4" />
           <p style={{color: 'red'}}>Video playback is unavailable on this browser.</p>
       </video>
-      <video width="100%" height="auto" autoPlay loop>
-          <source src="screenshots/fractal.mp4" type="video/mp4" />
+      <video width="100%" height="auto" controls autoPlay loop>
+          <source src="https://raw.githubusercontent.com/ValentinRapp/portfolio/media/fractal.mp4" type="video/mp4" />
           <p style={{color: 'red'}}>Video playback is unavailable on this browser.</p>
       </video>
-      <video width="100%" height="auto" autoPlay loop>
-          <source src="screenshots/sea.mp4" type="video/mp4" />
+      <video width="100%" height="auto" controls autoPlay loop>
+          <source src="https://raw.githubusercontent.com/ValentinRapp/portfolio/media/sea.mp4" type="video/mp4" />
           <p style={{color: 'red'}}>Video playback is unavailable on this browser.</p>
       </video>
     </div>
@@ -132,7 +132,7 @@ function Zappy(props: {id: string, zappyText1: string, zappyText2: string}): JSX
       <h1>Zappy<span className='cursor'>|</span></h1>
       <Markdown className='md' remarkPlugins={[remarkGfm]}>{props.zappyText1}</Markdown>
       <video width="100%" height="auto" controls autoPlay loop>
-        <source src="screenshots/zappy.mp4" type="video/mp4" />
+        <source src="https://raw.githubusercontent.com/ValentinRapp/portfolio/media/zappy.mp4" type="video/mp4" />
         <p style={{color: 'red'}}>Video playback is unavailable on this browser.</p>
       </video>
       <p style={{color: "#00aa00", cursor: "pointer"}} onClick={() => setShowNetworkDoc(current => !current)}>If you want more details about how every part communicates together, take a look at the Network documentation protocol (advanced)</p>
@@ -196,16 +196,16 @@ function App(): JSX.Element {
   const [S3text, setS3text] = useState('');
 
   useEffect(() => {
-    openFile('resources/raytracer.md', setRaytracerText);
-    openFile('resources/myteams1.md', setMyteamsText1);
-    openFile('resources/myteams2.md', setMyteamsText2);
-    openFile('resources/myteams3.md', setMyteamsText3);
-    openFile('resources/myteams4.md', setMyteamsText4);
-    openFile('resources/opengl_3D_engine1.md', setOpenglText1);
-    openFile('resources/opengl_3D_engine2.md', setOpenglText2);
-    openFile('resources/zappy1.md', setZappyText1);
-    openFile('resources/zappy_network_protocol.md', setZappyText2);
-    openFile('resources/s3pricingsimulator.md', setS3text);
+    openFile('/raytracer.md', setRaytracerText);
+    openFile('/myteams1.md', setMyteamsText1);
+    openFile('/myteams2.md', setMyteamsText2);
+    openFile('/myteams3.md', setMyteamsText3);
+    openFile('/myteams4.md', setMyteamsText4);
+    openFile('/opengl_3D_engine1.md', setOpenglText1);
+    openFile('/opengl_3D_engine2.md', setOpenglText2);
+    openFile('/zappy1.md', setZappyText1);
+    openFile('/zappy_network_protocol.md', setZappyText2);
+    openFile('/s3pricingsimulator.md', setS3text);
   }, []);
 
   const handleRedirect = (id: string, callback: () => void): void => {

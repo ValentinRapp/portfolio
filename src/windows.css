@@ -14,11 +14,11 @@
 
 @font-face {
     font-family: 'arcade classic';
-    src: url('../resources/fonts/arcadeclassic.ttf');
+    src: url('/fonts/arcadeclassic.ttf');
     /* font-family: 'modeseven';
-    src: url('./resources/fonts/modeseven.ttf'); */
+    src: url('/fonts/modeseven.ttf'); */
     font-family: 'modeseven';
-    src: url('../resources/fonts/modeseven_edit.otf');
+    src: url('/fonts/modeseven_edit.otf');
 }
 
 body {
