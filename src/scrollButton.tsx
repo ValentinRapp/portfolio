@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button } from "./styles";
 import { FaArrowAltCircleUp } from "react-icons/fa";
 
-export function ScrollButton(props: {visibilityTreshold: number}) {
+export function ScrollButton(props: {visibilityTreshold: number}): JSX.Element {
   const [visibility, setVisibility] = useState(false);
 
   useEffect(() => {
@@ -10,15 +10,6 @@ export function ScrollButton(props: {visibilityTreshold: number}) {
   }, []);
 
   return (
-    // <button
-    //   onClick={() =>
-    //     window.scrollTo({
-    //       top: 0,
-    //       behavior: 'smooth'
-    //     })
-    //   }
-    //   style={{ display: visibility ? 'inline' : 'none' }}
-    // />
     <Button>
       <FaArrowAltCircleUp onClick={() =>
         window.scrollTo({
