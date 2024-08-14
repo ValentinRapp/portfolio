@@ -8,16 +8,11 @@ import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { ScrollButton } from './scrollButton';
 import { Windows, WindowsProps as IDs} from './types';
+import { openFile } from './openFile';
 
 const mobile = (): boolean => {
   const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
   return /android|iphone|ipad|ipod|blackberry|windows phone/i.test(userAgent);
-}
-
-const openFile = (path: string, callback: (text: string) => void): void => {
-  fetch(path)
-    .then(response => response.text())
-    .then(text => callback(text));
 }
 
 const stringToHash = (str: string): number => {
