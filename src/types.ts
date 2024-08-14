@@ -1,13 +1,13 @@
 class WindowsClass {
-    about: boolean;
-    contact: boolean;
-    raytracer: boolean;
-    myteams: boolean;
-    opengl: boolean;
-    shadertoy: boolean;
-    zappy: boolean;
-    s3: boolean;
-    projects: boolean
+    about: boolean = false;
+    contact: boolean = false;
+    raytracer: boolean = false;
+    myteams: boolean = false;
+    opengl: boolean = false;
+    shadertoy: boolean = false;
+    zappy: boolean = false;
+    s3: boolean = false;
+    projects: boolean = false;
 };
 
 export interface Windows extends WindowsClass {};
